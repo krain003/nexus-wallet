@@ -1,8 +1,17 @@
 services:
+  # Это наш главный сервис, который запускает и бота, и веб-интерфейс
   - type: web
     name: nexus-wallet
     env: python
-    buildCommand: pip install -r requirements.txt
-    # ИЗМЕНИТЬ ЭТУ СТРОКУ
-    startCommand: python main.py
-    # ...
+    # Команда для установки всех зависимостей
+    buildCommand: "pip install -r requirements.txt"
+    # САМОЕ ВАЖНОЕ: команда для запуска нашего главного скрипта
+    startCommand: "python main.py"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.8 # Указываем стабильную версию Python
+      - key: PORT # Render сам подставит нужный порт для веб-сервера
+        fromService:
+          type: web
+          name: nexus-wallet
+          property: port
